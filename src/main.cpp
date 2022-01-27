@@ -69,23 +69,24 @@ int process(jack_nframes_t nframes, void *input_port_raw){
 	switch (type) {
 	  case 0x90:
 	    assert (event_size == 3);
-	    printf (" note on  (channel %2d): pitch %3d, velocity %3d",pitch,velocity);
+	    printf (" note on  (channel %2d): pitch %3d, velocity %3d \n",channel,pitch,velocity);
 	    break;
 	  case 0x80:
 	    assert (event_size == 3);
-	    printf (" note off (channel %2d): pitch %3d, velocity %3d",pitch,velocity);	    
+	    printf (" note off (channel %2d): pitch %3d, velocity %3d \n",channel,pitch,velocity);	    
 	    break;
 	  case 0xb0:
 	    assert (event_size == 3);
-	    printf (" control change (channel %2d): controller %3d, value %3d",pitch,velocity);    
+	    printf (" control change (channel %2d): controller %3d, value %3d \n",channel,pitch,velocity);    
 	    break;
 	  default:
 	    printf("unknown msg-type");
 	    break;
-
 	}
+  printf("\n");
 	printf("event_index = %d, rcf_midi_msgs_count = %#018" PRIx64 "\n", event_index, rcf_midi_msgs_count);  
 	printf("size = %d; val = %#018" PRIx64 "\n", event_size, val);
+  printf("\n");
 	rcf_midi_msgs_count++;
 	event_index++;
 	if(event_index < event_count)
