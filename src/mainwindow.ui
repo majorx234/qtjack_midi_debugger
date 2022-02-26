@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QT Jack Midi Debugger</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout"/>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuCalls">
+    <property name="title">
+     <string>Calls</string>
+    </property>
+    <addaction name="actionStart"/>
+    <addaction name="actionStop"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionConfigure"/>
+    <addaction name="actionClear"/>
+   </widget>
+   <addaction name="menuCalls"/>
+   <addaction name="menuTools"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionStart"/>
+   <addaction name="actionStop"/>
+   <addaction name="actionConfigure"/>
+   <addaction name="actionClear"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="toolTip">
+    <string>About program</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+A</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionStart">
+   <property name="icon">
+    <iconset resource="../qt_jack_midi_debugger.qrc">
+     <normaloff>:/images/start.png</normaloff>:/images/start.png</iconset>
+   </property>
+   <property name="text">
+    <string>S&amp;tart Listening</string>
+   </property>
+   <property name="toolTip">
+    <string>Star lisening on Jack Midi</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="../qt_jack_midi_debugger.qrc">
+     <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Stop Listening</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop listening from Jack Midi</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="icon">
+    <iconset resource="../qt_jack_midi_debugger.qrc">
+     <normaloff>:/images/config.png</normaloff>:/images/config.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Configure</string>
+   </property>
+   <property name="toolTip">
+    <string>Configure serial port</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../qt_jack_midi_debugger.qrc">
+     <normaloff>:/images/clear.png</normaloff>:/images/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>C&amp;lear</string>
+   </property>
+   <property name="toolTip">
+    <string>Clear data</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+L</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="../qt_jack_midi_debugger.qrc">
+     <normaloff>:/images/exit.png</normaloff>:/images/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../qt_jack_midi_debugger.qrc"/>
+ </resources>
+ <connections/>
+</ui>
