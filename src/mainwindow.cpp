@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
 //  setCentralWidget(m_console);   
-
+  Q_INIT_RESOURCE(qt_jack_midi_debugger);
   mainwindow_ui->setupUi(this);
   mainwindow_ui->actionStart->setEnabled(true);
   mainwindow_ui->actionStop->setEnabled(false);
@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
   delete mainwindow_ui;
+  Q_CLEANUP_RESOURCE(qt_jack_midi_debugger);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) 

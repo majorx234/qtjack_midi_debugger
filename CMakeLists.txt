@@ -24,8 +24,11 @@ include_directories("/usr/include")
 set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/include/mainwindow.hpp
+                 
 )
-
+list (APPEND RESOURCES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/qt_jack_midi_debugger.qrc
+)
 QT5_WRAP_CPP(MAIN_MOCrcs
               ${MAIN_APP_SRC}
 )
@@ -53,10 +56,14 @@ add_executable(jack_midi_debugger
 
 target_link_libraries(jack_midi_debugger PRIVATE ${JACK_LIBRARIES})
 
+
+qt5_add_resources (RCC_SOURCES ${RESOURCES})
+
 add_executable(qt_jack_midi_debugger 
     ${MAIN_MOCrcs}   
     ${MAIN_APP_SRC}
     ${MAIN_WINDOW_UISrcs}
+    ${RCC_SOURCES}
 )
 
 qt5_use_modules(qt_jack_midi_debugger Core Gui Widgets)
