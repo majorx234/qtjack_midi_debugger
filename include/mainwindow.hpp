@@ -3,6 +3,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
+#include "messagehistory.hpp"
 
 namespace Ui {
 class MainWindow;
@@ -27,8 +28,8 @@ private slots:
 
 private:
   void initActionsConnections();
-  Ui::MainWindow *mainwindow_ui = nullptr;
-  //Console *mainwindow_console = nullptr;
+  Ui::MainWindow *mainwindow_ui_ = nullptr;
+  MessageHistory *message_history_ = nullptr;
 };        
 
 #endif // MAIN_WINDOW_HPP

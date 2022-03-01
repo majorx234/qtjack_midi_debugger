@@ -17,27 +17,31 @@
 
 #include <string>
 #include <QtWidgets>
+#include "messagehistory.hpp"
 
 #include "mainwindow.hpp"
 
+
 MainWindow::MainWindow(QWidget *parent)
   :QMainWindow(parent)
-  ,mainwindow_ui(new Ui::MainWindow) 
-//  ,mainwindow_console(new Console)
+  ,mainwindow_ui_(new Ui::MainWindow) 
+  ,message_history_(new MessageHistory)
 {
-
-//  setCentralWidget(m_console);   
   Q_INIT_RESOURCE(qt_jack_midi_debugger);
-  mainwindow_ui->setupUi(this);
-  mainwindow_ui->actionStart->setEnabled(true);
-  mainwindow_ui->actionStop->setEnabled(false);
-  mainwindow_ui->actionQuit->setEnabled(true);
-  mainwindow_ui->actionConfigure->setEnabled(true);
+  message_history_->setEnabled(true);
+  setCentralWidget(message_history_);   
+  mainwindow_ui_->setupUi(this);
+  mainwindow_ui_->actionStart->setEnabled(true);
+  mainwindow_ui_->actionStop->setEnabled(false);
+  mainwindow_ui_->actionQuit->setEnabled(true);
+  mainwindow_ui_->actionConfigure->setEnabled(true);
+
+  message_history_->addMessage(QString("Test"));
 }
 
 MainWindow::~MainWindow()
 {
-  delete mainwindow_ui;
+  delete mainwindow_ui_;
   Q_CLEANUP_RESOURCE(qt_jack_midi_debugger);
 }
 
@@ -59,5 +63,5 @@ void MainWindow::close() {
 
 void MainWindow::initActionsConnections()
 {
-  connect(mainwindow_ui->actionQuit, &QAction::triggered, this, &MainWindow::close);
+  connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &MainWindow::close);
 }
