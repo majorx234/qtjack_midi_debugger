@@ -24,9 +24,12 @@ class MessageHistory : public QPlainTextEdit
 {
   Q_OBJECT
 
+signals:
+    void getData(const QByteArray &data);
 public:
     explicit MessageHistory(QWidget *parent = nullptr);
-    void addMessage(QString msg);    
+    void addMessage(const QString msg);
+    void setLocalEchoEnabled(bool set); 
 };
 
 #endif // MESSAGE_HISTORY_HPP_

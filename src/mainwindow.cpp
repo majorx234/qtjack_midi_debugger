@@ -28,15 +28,16 @@ MainWindow::MainWindow(QWidget *parent)
   ,message_history_(new MessageHistory)
 {
   Q_INIT_RESOURCE(qt_jack_midi_debugger);
-  message_history_->setEnabled(true);
-  setCentralWidget(message_history_);   
   mainwindow_ui_->setupUi(this);
+  setCentralWidget(message_history_);
   mainwindow_ui_->actionStart->setEnabled(true);
   mainwindow_ui_->actionStop->setEnabled(false);
   mainwindow_ui_->actionQuit->setEnabled(true);
   mainwindow_ui_->actionConfigure->setEnabled(true);
+  initActionsConnections();
 
-  message_history_->addMessage(QString("Test"));
+  // just for testing
+  message_history_->setEnabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -61,7 +62,12 @@ void MainWindow::close() {
   QMainWindow::close();    
 }
 
+void MainWindow::test() {
+  message_history_->addMessage(QString("Hello Jack"));
+}
+
 void MainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &MainWindow::close);
+  connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &MainWindow::test);
 }

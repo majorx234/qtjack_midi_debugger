@@ -12,21 +12,22 @@ class MainWindow;
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
  
-
-signals:
+ signals:
   void closed();  
-protected:
+
+ protected:
   void closeEvent(QCloseEvent *event) override;
   void resizeEvent(QResizeEvent* event) override;
-private slots:
 
+ private slots:
   void close();
+  void test();
 
-private:
+ private:
   void initActionsConnections();
   Ui::MainWindow *mainwindow_ui_ = nullptr;
   MessageHistory *message_history_ = nullptr;

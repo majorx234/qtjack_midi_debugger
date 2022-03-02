@@ -27,14 +27,13 @@ MessageHistory::MessageHistory(QWidget *parent)
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::green);
     setPalette(p);
-
-
 }
 
-void MessageHistory::addMessage(QString msg)
+void MessageHistory::addMessage(const QString msg)
 {
-    insertPlainText(msg);
-    QScrollBar *bar = verticalScrollBar();
-    bar->setValue(bar->maximum());
-
+  moveCursor(QTextCursor::End);
+  appendPlainText(msg);
+  QScrollBar *bar = verticalScrollBar();
+  bar->setValue(bar->maximum());
 }
+
