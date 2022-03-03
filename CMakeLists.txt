@@ -94,3 +94,14 @@ target_link_libraries(qt_jack_midi_debugger
 	jack_midi
 	Threads::Threads
 )
+
+
+add_executable(cli_jack_midi_debugger
+	src/main_cli.cpp
+)
+
+target_link_libraries(cli_jack_midi_debugger
+  message_history
+	jack_midi
+	Threads::Threads
+)
