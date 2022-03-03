@@ -1,0 +1,26 @@
+# Executables
+*.exe
+*.out
+*.app
+
+build/
+.ccls-cache/
+.projectile
+compile_commands.json
+
+##### Emacs
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+connection.xml
+notizen.txt
+build
+material
+compile_commands.json
+*\~
