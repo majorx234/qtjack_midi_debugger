@@ -17,6 +17,8 @@
 
 #include <string>
 #include <QtWidgets>
+#include <QString>
+
 #include "messagehistory.hpp"
 
 #include "mainwindow.hpp"
@@ -36,12 +38,16 @@ MainWindow::MainWindow(QWidget *parent)
   mainwindow_ui_->actionConfigure->setEnabled(true);
   initActionsConnections();
 
+  std::function<void(std::string)> msg_history_cb = std::bind(&MainWindow::msg_history_cb,
+                                                               this, std::placeholders::_1);
+  jack_midi_interface_ = new JackMidi(msg_history_cb);
   // just for testing
   message_history_->setEnabled(true);
 }
 
 MainWindow::~MainWindow()
 {
+  delete jack_midi_interface_;
   delete mainwindow_ui_;
   Q_CLEANUP_RESOURCE(qt_jack_midi_debugger);
 }
@@ -64,6 +70,10 @@ void MainWindow::close() {
 
 void MainWindow::test() {
   message_history_->addMessage(QString("Hello Jack"));
+}
+
+void MainWindow::msg_history_cb(std::string str) {
+  message_history_->addMessage(QString::fromStdString(str));
 }
 
 void MainWindow::initActionsConnections()

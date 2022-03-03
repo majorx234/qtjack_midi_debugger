@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Jack REQUIRED)
 find_package( Qt5Widgets REQUIRED)
 find_package( Qt5Core REQUIRED)
-
+find_package (Threads)
 
 include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
@@ -33,6 +33,8 @@ set(MESSAGE_HISTORY_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/messagehistory.cpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/include/messagehistory.hpp
 )
 
+set(JACK_MIDI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/jackmidi.cpp
+                      ${CMAKE_CURRENT_SOURCE_DIR}/include/jackmidi.hpp)
 
 QT5_WRAP_CPP(MAIN_MOCrcs
               ${MAIN_APP_SRC}
@@ -70,6 +72,11 @@ add_library(message_history
     ${MESSAGE_HISTORY_MOCrcs}
 )
 
+add_library(jack_midi
+	${JACK_MIDI_SOURCES}
+)
+target_link_libraries(jack_midi PRIVATE ${JACK_LIBRARIES})
+
 qt5_add_resources (RCC_SOURCES ${RESOURCES})
 
 add_executable(qt_jack_midi_debugger 
@@ -83,5 +90,7 @@ qt5_use_modules(qt_jack_midi_debugger Core Gui Widgets)
 qt5_use_modules(message_history Gui Widgets)
 
 target_link_libraries(qt_jack_midi_debugger
-    message_history
+  message_history
+	jack_midi
+	Threads::Threads
 )
