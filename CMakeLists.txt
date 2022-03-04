@@ -52,7 +52,7 @@ QT5_WRAP_CPP(MESSAGE_HISTORY_MOCrcs
 #QT5_WRAP_CPP( WIDGET_MOC_SOURCES
 #              ${CMAKE_CURRENT_SOURCE_DIR}/src/widget.cpp
 #              ${CMAKE_CURRENT_SOURCE_DIR}/include/widget.h
-#	      )
+#        )
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
@@ -75,7 +75,7 @@ add_library(message_history
 )
 
 add_library(jack_midi
-	${JACK_MIDI_SOURCES}
+  ${JACK_MIDI_SOURCES}
 )
 target_link_libraries(jack_midi PRIVATE ${JACK_LIBRARIES})
 
@@ -93,18 +93,18 @@ qt5_use_modules(message_history Gui Widgets)
 
 target_link_libraries(qt_jack_midi_debugger
   message_history
-	jack_midi
-	Threads::Threads
+  Threads::Threads
+  RTMidi::RTMidi
 )
 
 
 add_executable(cli_jack_midi_debugger
-	src/main_cli.cpp
+  src/main_cli.cpp
 )
 
 target_link_libraries(cli_jack_midi_debugger
   message_history
-	#jack_midi
+  #jack_midi
   RTMidi::RTMidi
-	Threads::Threads
+  Threads::Threads
 )

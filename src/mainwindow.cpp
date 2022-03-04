@@ -16,6 +16,8 @@
  */
 
 #include <string>
+#include <sstream>
+
 #include <QtWidgets>
 #include <QString>
 
@@ -23,6 +25,17 @@
 
 #include "mainwindow.hpp"
 
+void msg_callback( double deltatime, std::vector< unsigned char > *message, void *userData )
+{
+  MainWindow* main_window =  (MainWindow*)userData;
+  std::stringstream midi_msg;
+  unsigned int nBytes = message->size();
+  for ( unsigned int i=0; i<nBytes; i++ )
+    midi_msg << "Byte " << i << " = " << (int)message->at(i) << ", ";
+  if ( nBytes > 0 )
+    midi_msg << "stamp = " << deltatime; // << std::endl;
+  main_window->msg_history_cb(midi_msg.str());
+}
 
 MainWindow::MainWindow(QWidget *parent)
   :QMainWindow(parent)
@@ -38,16 +51,23 @@ MainWindow::MainWindow(QWidget *parent)
   mainwindow_ui_->actionConfigure->setEnabled(true);
   initActionsConnections();
 
-  std::function<void(std::string)> msg_history_cb = std::bind(&MainWindow::msg_history_cb,
-                                                               this, std::placeholders::_1);
-  jack_midi_interface_ = new JackMidi(msg_history_cb);
-  // just for testing
+  //std::function<void(std::string)> msg_history_cb = std::bind(&MainWindow::msg_history_cb,
+  //                                                             this, std::placeholders::_1);
+  midiin_ = new RtMidiIn(RtMidi::Api::UNIX_JACK);
+  unsigned int nPorts = midiin_->getPortCount();
+  if ( nPorts == 0 ) {
+    std::cout << "No ports available!\n";
+    delete midiin_;
+  }
+  midiin_->openPort( 0 );
   message_history_->setEnabled(true);
+  midiin_->setCallback( &msg_callback,(void *) this);
+  midiin_->ignoreTypes( false, false, false );
 }
 
 MainWindow::~MainWindow()
 {
-  delete jack_midi_interface_;
+  delete midiin_;
   delete mainwindow_ui_;
   Q_CLEANUP_RESOURCE(qt_jack_midi_debugger);
 }

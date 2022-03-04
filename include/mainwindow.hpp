@@ -4,7 +4,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 #include "messagehistory.hpp"
-#include "jackmidi.hpp"
+#include "RtMidi.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,7 +33,7 @@ class MainWindow : public QMainWindow {
   void initActionsConnections();
   Ui::MainWindow *mainwindow_ui_ = nullptr;
   MessageHistory *message_history_ = nullptr;
-  JackMidi *jack_midi_interface_;
+  RtMidiIn *midiin_;
 };        
 
 #endif // MAIN_WINDOW_HPP
