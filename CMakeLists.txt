@@ -8,6 +8,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(Jack REQUIRED)
+find_package(RTMidi REQUIRED)
 find_package( Qt5Widgets REQUIRED)
 find_package( Qt5Core REQUIRED)
 find_package (Threads)
@@ -19,6 +20,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(include)
 #include_directories(${JACK_INCLUDE_DIRS})
 include_directories("/usr/include")
+include_directories(${RTMidi_INCLUDE_DIRS})
 
 set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
                  ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.cpp
@@ -102,6 +104,7 @@ add_executable(cli_jack_midi_debugger
 
 target_link_libraries(cli_jack_midi_debugger
   message_history
-	jack_midi
+	#jack_midi
+  RTMidi::RTMidi
 	Threads::Threads
 )
