@@ -12,6 +12,7 @@ find_package(RTMidi REQUIRED)
 find_package( Qt5Widgets REQUIRED)
 find_package( Qt5Core REQUIRED)
 find_package (Threads)
+find_package(qtjack)
 
 include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
@@ -38,6 +39,10 @@ set(MESSAGE_HISTORY_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/messagehistory.cpp
 set(JACK_MIDI_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/jackmidi.cpp
                       ${CMAKE_CURRENT_SOURCE_DIR}/include/jackmidi.hpp)
 
+set(QTJACK_MAINWINDOW_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/qtjack_mainwindow.cpp
+                          ${CMAKE_CURRENT_SOURCE_DIR}/include/qtjack_mainwindow.hpp
+)
+
 QT5_WRAP_CPP(MAIN_MOCrcs
               ${MAIN_APP_SRC}
 )
@@ -47,6 +52,10 @@ QT5_WRAP_UI(MAIN_WINDOW_UISrcs
 
 QT5_WRAP_CPP(MESSAGE_HISTORY_MOCrcs
               ${MESSAGE_HISTORY_SOURCES}
+)
+
+QT5_WRAP_CPP(QTJACK_MAINWINDOW_MOCrcs
+              ${QTJACK_MAINWINDOW_SRC}
 )
 
 #QT5_WRAP_CPP( WIDGET_MOC_SOURCES
@@ -97,7 +106,6 @@ target_link_libraries(qt_jack_midi_debugger
   RTMidi::RTMidi
 )
 
-
 add_executable(cli_jack_midi_debugger
   src/main_cli.cpp
 )
@@ -107,4 +115,21 @@ target_link_libraries(cli_jack_midi_debugger
   #jack_midi
   RTMidi::RTMidi
   Threads::Threads
+)
+
+
+add_library(qtjack_midi_debugger
+    ${QTJACK_MAINWINDOW_SRC}
+    ${QTJACK_MAINWINDOW_MOCrcs}
+)
+
+target_include_directories(qtjack_midi_debugger SYSTEM
+PUBLIC 
+  qtjack::qtjack
+)
+
+target_link_libraries(qtjack_midi_debugger
+PRIVATE
+  message_history
+  qtjack::qtjack
 )
