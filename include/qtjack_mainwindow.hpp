@@ -22,6 +22,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   explicit QtJackMainWindow(QWidget *parent = nullptr);
   ~QtJackMainWindow();
   void msg_history_cb(std::string str);
+  void process(int samples);
  
  signals:
   void closed();  
@@ -35,11 +36,13 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void test();
 
  private:
+  void setupJackClient();
   void initActionsConnections();
   Ui::MainWindow *mainwindow_ui_ = nullptr;
   MessageHistory *message_history_ = nullptr;
   QtJack::Client _client;
-  QtJack::MidiPort in;
+  QtJack::MidiPort _midi_in;
+  QtJack::MidiBuffer midi_buffer;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP

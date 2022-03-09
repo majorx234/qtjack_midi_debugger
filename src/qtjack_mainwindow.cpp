@@ -51,9 +51,16 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   mainwindow_ui_->actionQuit->setEnabled(true);
   mainwindow_ui_->actionConfigure->setEnabled(true);
   initActionsConnections();
-
+  setupJackClient();
   //std::function<void(std::string)> msg_history_cb = std::bind(&MainWindow::msg_history_cb,
   //                                                             this, std::placeholders::_1);
+}
+
+void QtJackMainWindow::setupJackClient() {
+    // Connect to JACK server
+    _client.connectToServer("qtjack_midi_debugger");
+    _client.registerMidiInPort("in");
+    _client.setMainProcessor(this);
 }
 
 QtJackMainWindow::~QtJackMainWindow()
@@ -90,4 +97,10 @@ void QtJackMainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &QtJackMainWindow::close);
   connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::test);
+}
+
+void QtJackMainWindow::process(int samples) {
+    // Just shift samples from the ringbuffers to the outputs buffers.
+    int event_count = _midi_in.buffer(samples).numberOfEvents();
+    printf("number events: %d/n");
 }
