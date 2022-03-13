@@ -102,5 +102,5 @@ void QtJackMainWindow::initActionsConnections()
 void QtJackMainWindow::process(int samples) {
     // Just shift samples from the ringbuffers to the outputs buffers.
     int event_count = _midi_in.buffer(samples).numberOfEvents();
-    printf("number events: %d/n");
+    printf("number events: %d/n",event_count);
 }
