@@ -23,7 +23,6 @@
 class MessageHistory : public QPlainTextEdit
 {
   Q_OBJECT
-
 signals:
     void getData(const QByteArray &data);
 public:

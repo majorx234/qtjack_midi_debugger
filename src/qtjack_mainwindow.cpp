@@ -29,7 +29,7 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   :QMainWindow(parent)
   ,Processor(_client)
   ,mainwindow_ui_(new Ui::MainWindow) 
-  ,message_history_(new MessageHistory)
+  ,message_history_(new MessageHistory(this))
 {
   Q_INIT_RESOURCE(qt_jack_midi_debugger);
   mainwindow_ui_->setupUi(this);
@@ -66,21 +66,22 @@ void QtJackMainWindow::closeEvent(QCloseEvent *event)
 
 void QtJackMainWindow::resizeEvent(QResizeEvent* event)
 {
-  QMainWindow::resizeEvent(event);
+    QMainWindow::resizeEvent(event);
 }
 
 void QtJackMainWindow::close() {
-  QMainWindow::close();    
+    QMainWindow::close();    
 }
 
 void QtJackMainWindow::test() {
-  message_history_->addMessage(QString("Hello Jack"));
+    message_history_->addMessage(QString("Hello Jack"));
 }
 
 void QtJackMainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &QtJackMainWindow::close);
   connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::test);
+  connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
 }
 
 void QtJackMainWindow::process(int samples) {

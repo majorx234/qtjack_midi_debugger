@@ -31,9 +31,9 @@ MessageHistory::MessageHistory(QWidget *parent)
 
 void MessageHistory::addMessage(const QString msg)
 {
-  moveCursor(QTextCursor::End);
-  appendPlainText(msg);
-  QScrollBar *bar = verticalScrollBar();
-  bar->setValue(bar->maximum());
+    moveCursor(QTextCursor::End);
+    appendPlainText(msg);
+    QScrollBar *bar = verticalScrollBar();
+    bar->setValue(bar->maximum());
 }
 
