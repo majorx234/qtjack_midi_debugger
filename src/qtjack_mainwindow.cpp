@@ -25,18 +25,6 @@
 
 #include "qtjack_mainwindow.hpp"
 
-void msg_callback( double deltatime, std::vector< unsigned char > *message, void *userData )
-{
-  QtJackMainWindow* main_window =  (QtJackMainWindow*)userData;
-  std::stringstream midi_msg;
-  unsigned int nBytes = message->size();
-  for ( unsigned int i=0; i<nBytes; i++ )
-    midi_msg << "Byte " << i << " = " << (int)message->at(i) << ", ";
-  if ( nBytes > 0 )
-    midi_msg << "stamp = " << deltatime; // << std::endl;
-  main_window->msg_history_cb(midi_msg.str());
-}
-
 QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   :QMainWindow(parent)
   ,Processor(_client)
@@ -52,8 +40,6 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   mainwindow_ui_->actionConfigure->setEnabled(true);
   initActionsConnections();
   setupJackClient();
-  //std::function<void(std::string)> msg_history_cb = std::bind(&MainWindow::msg_history_cb,
-  //                                                             this, std::placeholders::_1);
 }
 
 void QtJackMainWindow::setupJackClient() {
@@ -61,6 +47,8 @@ void QtJackMainWindow::setupJackClient() {
     _client.connectToServer("qtjack_midi_debugger");
     _client.registerMidiInPort("in");
     _client.setMainProcessor(this);
+    _midi_in_buffer = new QtJack::MidiBuffer();
+    _client.activate();
 }
 
 QtJackMainWindow::~QtJackMainWindow()
@@ -89,10 +77,6 @@ void QtJackMainWindow::test() {
   message_history_->addMessage(QString("Hello Jack"));
 }
 
-void QtJackMainWindow::msg_history_cb(std::string str) {
-  message_history_->addMessage(QString::fromStdString(str));
-}
-
 void QtJackMainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &QtJackMainWindow::close);
@@ -102,5 +86,4 @@ void QtJackMainWindow::initActionsConnections()
 void QtJackMainWindow::process(int samples) {
     // Just shift samples from the ringbuffers to the outputs buffers.
     int event_count = _midi_in.buffer(samples).numberOfEvents();
-    printf("number events: %d/n",event_count);
 }

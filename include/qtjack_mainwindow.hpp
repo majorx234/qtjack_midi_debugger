@@ -42,7 +42,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   MessageHistory *message_history_ = nullptr;
   QtJack::Client _client;
   QtJack::MidiPort _midi_in;
-  QtJack::MidiBuffer midi_buffer;
+  QtJack::MidiBuffer* _midi_in_buffer;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP
