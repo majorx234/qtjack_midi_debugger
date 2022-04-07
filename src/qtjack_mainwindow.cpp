@@ -87,4 +87,14 @@ void QtJackMainWindow::initActionsConnections()
 void QtJackMainWindow::process(int samples) {
     // Just shift samples from the ringbuffers to the outputs buffers.
     int event_count = _midi_in.buffer(samples).numberOfEvents();
+    for (int i = 0;i<event_count;i++) {
+        bool ok  = false;
+        QtJack::MidiEvent in_event = _midi_in.buffer(samples).readEvent(i, &ok);
+
+        //should be written in realtimesafe ringbuffer
+        QtJack::MidiData* event_data = _midi_in_buffer->reserveEvent(samples, in_event.size);
+        if(event_data != nullptr) {
+            memcpy(event_data, in_event.buffer, in_event.size);
+        }
+    }
 }
