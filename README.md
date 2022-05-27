@@ -1,9 +1,9 @@
 # qt_jack_midi_debugger
 a small Qt programm to debug midi msgs send through Jack Server
-- WIP but running see history
-
+- WIP but running, see history
+![Alt text](documentation/screenshot.png?raw=true "qt_jack_midi_debugger with patchage in background")
 - simple example of a Qt GUI program to see information of Midi inputs (timestamp, channel,value...)
-- also CLI programm is planned (WIP)
+- CLI program is planned (WIP)
 
 ## Info
 Dependencies:
