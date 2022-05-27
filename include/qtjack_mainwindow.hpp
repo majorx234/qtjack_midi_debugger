@@ -36,6 +36,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
  private slots:
   void close();
   void test();
+  void processMidiMsg(QtJack::MidiMsg new_msg);
 
  private:
   void setupJackClient();

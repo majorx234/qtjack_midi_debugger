@@ -77,11 +77,44 @@ void QtJackMainWindow::test() {
     message_history_->addMessage(QString("Hello Jack"));
 }
 
+void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
+    int type = new_msg.midiData[0] & 0xf0;
+    int channel = (new_msg.midiData[0] & 0x0f) + 1;
+    int index = new_msg.midiData[1];
+    int value = new_msg.midiData[2];
+    uint32_t time = new_msg.timestamp;
+
+    QString msg_string = "Time: " + QString::number(time).rightJustified(5, '0'); +" Channel: " + QString::number(channel);
+    switch(type) {
+        case 0x80:
+            msg_string += " Note Off " + QString::number(index) + ": " + QString::number(value);
+        break;
+        case 0x90:
+            msg_string += " Note On " + QString::number(index) + ": " + QString::number(value);
+            break;
+        case 0xB0:
+            msg_string += " Controller " + QString::number(index) + ": " + QString::number(value);
+            break;
+        case 0xC0:
+            msg_string += " Program: " + QString::number(index);
+            break;
+        case 0xD0:
+            msg_string += " Aftertouch: " + QString::number(index);
+            break;
+        case 0xE0:
+            msg_string += " Pitchbend: " + QString::number(index + (value<<7) - 8192);
+            break;
+    }
+    message_history_->addMessage(msg_string);
+}
+
 void QtJackMainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &QtJackMainWindow::close);
   connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::test);
   connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
+  connect(this, &QtJackMainWindow::midiMsgEvent,
+          this, &QtJackMainWindow::processMidiMsg);
 }
 
 void QtJackMainWindow::process(int samples) {
@@ -95,6 +128,7 @@ void QtJackMainWindow::process(int samples) {
         if(event_data != nullptr) {
             memcpy(event_data, in_event.buffer, in_event.size);
         }
+        printf("in_event %d \n",in_event.size);
         if(in_event.size == 3) {
             // create MidiMsgs and send via Qt signal
             QtJack::MidiMsg new_msg{{in_event.buffer[0],
