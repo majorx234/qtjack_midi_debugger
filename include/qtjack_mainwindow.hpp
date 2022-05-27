@@ -10,6 +10,7 @@
 #include <Client>
 #include <Processor>
 #include <RingBuffer>
+#include <MidiMsg>
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +26,8 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void process(int samples);
  
  signals:
-  void closed();  
+  void closed();
+  void midiMsgEvent(QtJack::MidiMsg);
 
  protected:
   void closeEvent(QCloseEvent *event) override;
