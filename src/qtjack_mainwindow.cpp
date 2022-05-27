@@ -45,9 +45,8 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
 void QtJackMainWindow::setupJackClient() {
     // Connect to JACK server
     _client.connectToServer("qtjack_midi_debugger");
-    _client.registerMidiInPort("in");
+    _midi_in = _client.registerMidiInPort("in");
     _client.setMainProcessor(this);
-    _midi_in_buffer = new QtJack::MidiBuffer();
     _client.activate();
 }
 
@@ -84,16 +83,16 @@ void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
     int value = new_msg.midiData[2];
     uint32_t time = new_msg.timestamp;
 
-    QString msg_string = "Time: " + QString::number(time).rightJustified(5, '0'); +" Channel: " + QString::number(channel);
+    QString msg_string = "Time: " + QString::number(time).rightJustified(10, '0'); +" Channel: " + QString::number(channel);
     switch(type) {
         case 0x80:
-            msg_string += " Note Off " + QString::number(index) + ": " + QString::number(value);
+            msg_string += " Note Off " + QString::number(index) + " Value: " + QString::number(value);
         break;
         case 0x90:
-            msg_string += " Note On " + QString::number(index) + ": " + QString::number(value);
+            msg_string += " Note On " + QString::number(index) + " Value: " + QString::number(value);
             break;
         case 0xB0:
-            msg_string += " Controller " + QString::number(index) + ": " + QString::number(value);
+            msg_string += " Controller " + QString::number(index) + " Value: " + QString::number(value);
             break;
         case 0xC0:
             msg_string += " Program: " + QString::number(index);
@@ -119,23 +118,17 @@ void QtJackMainWindow::initActionsConnections()
 
 void QtJackMainWindow::process(int samples) {
     int event_count = _midi_in.buffer(samples).numberOfEvents();
-    for (int i = 0;i<event_count;i++) {
+        for (int i = 0;i<event_count;i++) {
         bool ok  = false;
         QtJack::MidiEvent in_event = _midi_in.buffer(samples).readEvent(i, &ok);
-
-        //ToDo:should be written in realtimesafe ringbuffer
-        QtJack::MidiData* event_data = _midi_in_buffer->reserveEvent(samples, in_event.size);
-        if(event_data != nullptr) {
-            memcpy(event_data, in_event.buffer, in_event.size);
-        }
-        printf("in_event %d \n",in_event.size);
         if(in_event.size == 3) {
             // create MidiMsgs and send via Qt signal
+            uint32_t timestampe = in_event.time + _client.getJackTime();
             QtJack::MidiMsg new_msg{{in_event.buffer[0],
                                      in_event.buffer[1],
                                      in_event.buffer[2]},
                                      in_event.size,
-                                     in_event.time};
+                                     timestampe};
             emit midiMsgEvent(new_msg);
         }
     }
