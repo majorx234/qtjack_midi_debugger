@@ -1,6 +1,8 @@
 #ifndef QTJACK_MAIN_WINDOW_HPP 
 #define QTJACK_MAIN_WINDOW_HPP
 
+#include <atomic>
+
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 #include "messagehistory.hpp"
@@ -36,6 +38,8 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
  private slots:
   void close();
   void test();
+  void toogleStart();
+  void toogleStop();
   void processMidiMsg(QtJack::MidiMsg new_msg);
 
  private:
@@ -46,6 +50,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   QtJack::Client _client;
   QtJack::MidiPort _midi_in;
   QtJack::MidiBuffer* _midi_in_buffer;
+  std::atomic_bool started;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP

@@ -44,6 +44,7 @@ make
 - connect midi devices or other programs to inpput via tools like patchage, gladish...
 
 ## History:
+2022-05-30 toggle via GUI elements printing of midi messages
 2022-05-28 First running Version of GUI Programm
 
 ## ToDo:

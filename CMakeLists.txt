@@ -147,7 +147,6 @@ add_executable(qtjack_midi_debugger_app
     ${QTJACK_MAIN_MOCrcs}
     ${QTJACK_MAIN_APP_SRC}
 )
-
 target_include_directories(qtjack_midi_debugger_app SYSTEM
 PUBLIC 
   qtjack::qtjack
