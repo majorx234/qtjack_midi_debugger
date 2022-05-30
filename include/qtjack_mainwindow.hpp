@@ -6,7 +6,6 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
 #include "messagehistory.hpp"
-#include "RtMidi.h"
 
 // QtJack includes
 #include <Client>
