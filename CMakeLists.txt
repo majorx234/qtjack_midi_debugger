@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(qt_jack_midi_debugger
   DESCRIPTION "a small jack midi debugger"
+  VERSION 0.9.0
   LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
@@ -12,21 +13,21 @@ find_package(Qt5Core REQUIRED)
 find_package(Threads)
 find_package(qtjack)
 
-include_directories(${PROJECT_INCLUDE_DIR})
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
-include_directories(${Qt5Core_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(include)
-
 list (APPEND RESOURCES 
         ${CMAKE_CURRENT_SOURCE_DIR}/qt_jack_midi_debugger.qrc
 )
 
-set(MESSAGE_HISTORY_SOURCES 
-  src/messagehistory.cpp
+set(MESSAGE_HISTORY_HEADERS 
   include/messagehistory.hpp
 )
+set(MESSAGE_HISTORY_SOURCES 
+  src/messagehistory.cpp
+)
 
+
+set(QTJACK_MAINWINDOW_HEADERS
+  include/qtjack_mainwindow.hpp
+)
 set(QTJACK_MAINWINDOW_SOURCES
   src/qtjack_mainwindow.cpp
   include/qtjack_mainwindow.hpp
@@ -40,15 +41,11 @@ QT5_WRAP_UI(MAIN_WINDOW_UISrcs
             ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.ui)
 
 QT5_WRAP_CPP(MESSAGE_HISTORY_MOCrcs
-              ${MESSAGE_HISTORY_SOURCES}
+              ${MESSAGE_HISTORY_HEADERS}
 )
 
 QT5_WRAP_CPP(QTJACK_MAINWINDOW_MOCrcs
-              ${QTJACK_MAINWINDOW_SOURCES}
-)
-
-QT5_WRAP_CPP(QTJACK_MAIN_MOCrcs
-              ${QTJACK_MAIN_APP_SOURCES}
+              ${QTJACK_MAINWINDOW_HEADERS}
 )
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
@@ -57,7 +54,16 @@ add_library(message_history)
 target_sources(message_history
 PRIVATE
     ${MESSAGE_HISTORY_SOURCES}
+    ${MESSAGE_HISTORY_HEADERS}
     ${MESSAGE_HISTORY_MOCrcs}
+)
+target_include_directories(message_history SYSTEM
+PUBLIC
+  ${Qt5Core_INCLUDE_DIRS}
+  ${Qt5Widgets_INCLUDE_DIRS}
+PRIVATE 
+  include
+  ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(message_history
   Qt5::Core
@@ -69,13 +75,18 @@ add_library(qtjack_midi_debugger)
 target_sources(qtjack_midi_debugger
 PRIVATE
     ${QTJACK_MAINWINDOW_SOURCES}
+    ${QTJACK_MAINWINDOW_HEADERS}
     ${QTJACK_MAINWINDOW_MOCrcs}
     ${MAIN_WINDOW_UISrcs}
     ${RCC_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger SYSTEM
-PUBLIC 
+PUBLIC
+  ${Qt5Core_INCLUDE_DIRS}
   qtjack::qtjack
+PRIVATE
+  include
+  ${CMAKE_CURRENT_BINARY_DIR} 
 )
 target_link_libraries(qtjack_midi_debugger
 PRIVATE
@@ -87,12 +98,16 @@ PRIVATE
 add_executable(qtjack_midi_debugger_app)
 target_sources(qtjack_midi_debugger_app
 PRIVATE
-    ${QTJACK_MAIN_MOCrcs}
     ${QTJACK_MAIN_APP_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger_app SYSTEM
-PUBLIC 
+PUBLIC
+  ${Qt5Core_INCLUDE_DIRS}
+  ${Qt5Widgets_INCLUDE_DIRS}
   qtjack::qtjack
+PRIVATE
+  include
+  ${CMAKE_CURRENT_BINARY_DIR}   
 )
 target_link_libraries(qtjack_midi_debugger_app
 PRIVATE
