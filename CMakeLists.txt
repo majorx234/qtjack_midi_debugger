@@ -8,8 +8,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(Threads)
 find_package(qtjack)
 
@@ -58,9 +57,6 @@ PRIVATE
     ${MESSAGE_HISTORY_MOCrcs}
 )
 target_include_directories(message_history SYSTEM
-PUBLIC
-  ${Qt5Core_INCLUDE_DIRS}
-  ${Qt5Widgets_INCLUDE_DIRS}
 PRIVATE 
   include
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -81,9 +77,6 @@ PRIVATE
     ${RCC_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger SYSTEM
-PUBLIC
-  ${Qt5Core_INCLUDE_DIRS}
-  qtjack::qtjack
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR} 
@@ -101,10 +94,6 @@ PRIVATE
     ${QTJACK_MAIN_APP_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger_app SYSTEM
-PUBLIC
-  ${Qt5Core_INCLUDE_DIRS}
-  ${Qt5Widgets_INCLUDE_DIRS}
-  qtjack::qtjack
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR}   
@@ -113,5 +102,6 @@ target_link_libraries(qtjack_midi_debugger_app
 PRIVATE
   qtjack_midi_debugger
   Qt5::Core
+  Qt5::Widgets
   qtjack::qtjack
 )
