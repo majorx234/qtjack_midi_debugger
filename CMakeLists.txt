@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 project(qt_jack_midi_debugger
   DESCRIPTION "a small jack midi debugger"
-  VERSION 0.9.0
+  VERSION 1.0.0
   LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+include(GNUInstallDirs)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(Threads)
@@ -49,7 +52,7 @@ QT5_WRAP_CPP(QTJACK_MAINWINDOW_MOCrcs
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
-add_library(message_history)
+add_library(message_history SHARED)
 target_sources(message_history
 PRIVATE
     ${MESSAGE_HISTORY_SOURCES}
@@ -57,6 +60,8 @@ PRIVATE
     ${MESSAGE_HISTORY_MOCrcs}
 )
 target_include_directories(message_history SYSTEM
+PUBLIC 
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
 PRIVATE 
   include
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -65,9 +70,11 @@ target_link_libraries(message_history
   Qt5::Core
   Qt5::Widgets
 )
+set_target_properties(message_history PROPERTIES PUBLIC_HEADER "${MESSAGE_HISTORY_HEADERS}")
 qt5_add_resources (RCC_SOURCES ${RESOURCES})
 
-add_library(qtjack_midi_debugger)
+
+add_library(qtjack_midi_debugger SHARED)
 target_sources(qtjack_midi_debugger
 PRIVATE
     ${QTJACK_MAINWINDOW_SOURCES}
@@ -77,6 +84,8 @@ PRIVATE
     ${RCC_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger SYSTEM
+PUBLIC 
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR} 
@@ -87,6 +96,7 @@ PRIVATE
   qtjack::qtjack
   Qt5::Core
 )
+set_target_properties(qtjack_midi_debugger PROPERTIES PUBLIC_HEADER "${QTJACK_MAINWINDOW_HEADERS}")
 
 add_executable(qtjack_midi_debugger_app)
 target_sources(qtjack_midi_debugger_app
@@ -94,6 +104,8 @@ PRIVATE
     ${QTJACK_MAIN_APP_SOURCES}
 )
 target_include_directories(qtjack_midi_debugger_app SYSTEM
+PUBLIC 
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR}   
@@ -104,4 +116,25 @@ PRIVATE
   Qt5::Core
   Qt5::Widgets
   qtjack::qtjack
+)
+
+install(TARGETS
+    message_history
+    qtjack_midi_debugger
+    qtjack_midi_debugger_app
+    EXPORT qt_jack_midi_debuggerConfig
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    PUBLIC_HEADER DESTINATION include/qt_jack_midi_debugger
+)
+
+export(TARGETS qtjack_midi_debugger_app
+    NAMESPACE qt_jack_midi_debugger::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/qt_jack_midi_debuggerConfig.cmake"
+)
+
+install(EXPORT qt_jack_midi_debuggerConfig
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/qt_jack_midi_debugger/cmake"
+    NAMESPACE qt_jack_midi_debugger::
 )
