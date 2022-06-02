@@ -34,8 +34,11 @@ mkdir build
 cd build
 cmake ..
 make
-
 ```
+under Arch Linux:
+use PKGBUILD script die create package:
+https://github.com/majorx234/qt_jack_midi_debugger_PKGBUILD
+
 - run:
 ```
 ./qtjack_midi_debugger_app
