@@ -22,8 +22,8 @@ On Arch Linux:
 ```
 sudo pacman -S jack2 qt5-base
 ```
-QtJack: https://github.com/majorx234/qtjack
-easy to build as package: https://github.com/majorx234/qtjack_PKGBUILD
+- QtJack: https://github.com/majorx234/qtjack
+- easy to build as package: https://github.com/majorx234/qtjack_PKGBUILD
 
 ## Usage:
 - build project:
@@ -35,9 +35,9 @@ cd build
 cmake ..
 make
 ```
-under Arch Linux:
-use PKGBUILD script die create package:
-https://github.com/majorx234/qt_jack_midi_debugger_PKGBUILD
+- on Arch Linux:
+- use PKGBUILD script die create package:
+- https://github.com/majorx234/qt_jack_midi_debugger_PKGBUILD
 
 - run:
 ```
@@ -47,9 +47,9 @@ https://github.com/majorx234/qt_jack_midi_debugger_PKGBUILD
 - connect midi devices or other programs to inpput via tools like patchage, gladish...
 
 ## History:
-2022-06-01 Version 1.0.0 with install section
-2022-05-30 toggle via GUI elements printing of midi messages
-2022-05-28 First running Version of GUI Programm
+- 2022-06-01 Version 1.0.0 with install section
+- 2022-05-30 toggle via GUI elements printing of midi messages
+- 2022-05-28 First running Version of GUI Programm
 
 ## ToDo:
 - timestamp in ms
