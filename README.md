@@ -47,12 +47,12 @@ make
 - connect midi devices or other programs to inpput via tools like patchage, gladish...
 
 ## History:
+- 2022-06-01 Add timestamp in ms
 - 2022-06-01 Version 1.0.0 with install section
 - 2022-05-30 toggle via GUI elements printing of midi messages
 - 2022-05-28 First running Version of GUI Programm
 
 ## ToDo:
-- timestamp in ms
 - support for other Midi messages like SysEx etc.
 - GUI elements like start/stop recording
 - save history in Midi file 

@@ -67,6 +67,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   QtJack::MidiPort _midi_in;
   QtJack::MidiBuffer* _midi_in_buffer;
   std::atomic_bool started;
+  unsigned int _sample_rate;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP

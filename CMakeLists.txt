@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(qt_jack_midi_debugger
   DESCRIPTION "a small jack midi debugger"
-  VERSION 1.0.0
+  VERSION 1.0.1
   LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${PROJECT_SOURCE_DIR}/cmake")
