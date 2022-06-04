@@ -97,7 +97,7 @@ void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
   int index = new_msg.midiData[1];
   int value = new_msg.midiData[2];
   uint32_t time = new_msg.timestamp;
-  double time_in_ms = (time * 1000.0) / _sample_rate;
+  int time_in_ms = (int)((time * 1000.0) / _sample_rate);
 
   QString msg_string = "Time: " + QString::number(time_in_ms).rightJustified(10, '0') +" Channel: " + QString::number(channel);
   switch(type) {
