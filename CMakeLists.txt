@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(qt_jack_midi_debugger
+project(qtjack_midi_debugger
   DESCRIPTION "a small jack midi debugger"
   VERSION 1.0.2
   LANGUAGES CXX)
@@ -16,7 +16,7 @@ find_package(Threads)
 find_package(qtjack)
 
 list (APPEND RESOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/qt_jack_midi_debugger.qrc
+        ${CMAKE_CURRENT_SOURCE_DIR}/qtjack_midi_debugger.qrc
 )
 
 set(MESSAGE_HISTORY_HEADERS 
@@ -61,7 +61,7 @@ PRIVATE
 )
 target_include_directories(message_history SYSTEM
 PUBLIC 
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qtjack_midi_debugger
 PRIVATE 
   include
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -85,7 +85,7 @@ PRIVATE
 )
 target_include_directories(qtjack_midi_debugger SYSTEM
 PUBLIC 
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qtjack_midi_debugger
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR} 
@@ -105,7 +105,7 @@ PRIVATE
 )
 target_include_directories(qtjack_midi_debugger_app SYSTEM
 PUBLIC 
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qt_jack_midi_debugger
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/qtjack_midi_debugger
 PRIVATE
   include
   ${CMAKE_CURRENT_BINARY_DIR}   
@@ -122,19 +122,19 @@ install(TARGETS
     message_history
     qtjack_midi_debugger
     qtjack_midi_debugger_app
-    EXPORT qt_jack_midi_debuggerConfig
+    EXPORT qtjack_midi_debuggerConfig
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    PUBLIC_HEADER DESTINATION include/qt_jack_midi_debugger
+    PUBLIC_HEADER DESTINATION include/qtjack_midi_debugger
 )
 
 export(TARGETS qtjack_midi_debugger_app
-    NAMESPACE qt_jack_midi_debugger::
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/qt_jack_midi_debuggerConfig.cmake"
+    NAMESPACE qtjack_midi_debugger::
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/qtjack_midi_debuggerConfig.cmake"
 )
 
-install(EXPORT qt_jack_midi_debuggerConfig
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/qt_jack_midi_debugger/cmake"
-    NAMESPACE qt_jack_midi_debugger::
+install(EXPORT qtjack_midi_debuggerConfig
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/qtjack_midi_debugger/cmake"
+    NAMESPACE qtjack_midi_debugger::
 )

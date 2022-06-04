@@ -1,7 +1,7 @@
-# qt_jack_midi_debugger
+# qtjack_midi_debugger
 a small Qt programm to debug midi msgs send through Jack Server
 - WIP but running, see history
-![Alt text](documentation/screenshot.png?raw=true "qt_jack_midi_debugger with patchage in background")
+![Alt text](documentation/screenshot.png?raw=true "qtjack_midi_debugger with patchage in background")
 - simple example of a Qt GUI program to see information of Midi inputs (timestamp, channel,value...)
 - CLI program is planned (WIP)
 
@@ -28,8 +28,8 @@ sudo pacman -S jack2 qt5-base
 ## Usage:
 - build project:
 ```
-git clone https://github.com/majorx234/qt_jack_midi_debugger.git
-cd qt_jack_midi_debugger
+git clone https://github.com/majorx234/qtjack_midi_debugger.git
+cd qtjack_midi_debugger
 mkdir build
 cd build
 cmake ..
@@ -37,7 +37,7 @@ make
 ```
 - on Arch Linux:
 - use PKGBUILD script die create package:
-- https://github.com/majorx234/qt_jack_midi_debugger_PKGBUILD
+- https://github.com/majorx234/qtjack_midi_debugger_PKGBUILD
 
 - run:
 ```

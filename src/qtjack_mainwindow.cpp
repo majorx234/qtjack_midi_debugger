@@ -1,5 +1,5 @@
 /* 
- * This file is part of the rtaudio_example distribution (https://github.com/majorx234/qt_jack_midi_debugger ).
+ * This file is part of the rtaudio_example distribution (https://github.com/majorx234/qtjack_midi_debugger ).
  * Copyright (c) 2021-2022 Majorx234 <majorx234@googlemail.com>
  * 
  * This program is free software: you can redistribute it and/or modify  
@@ -33,7 +33,7 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   , started(false)
   , _sample_rate(48000)
 {
-  Q_INIT_RESOURCE(qt_jack_midi_debugger);
+  Q_INIT_RESOURCE(qtjack_midi_debugger);
   mainwindow_ui_->setupUi(this);
   setCentralWidget(message_history_);
   mainwindow_ui_->actionStart->setEnabled(true);
@@ -56,7 +56,7 @@ void QtJackMainWindow::setupJackClient() {
 QtJackMainWindow::~QtJackMainWindow()
 {
   delete mainwindow_ui_;
-  Q_CLEANUP_RESOURCE(qt_jack_midi_debugger);
+  Q_CLEANUP_RESOURCE(qtjack_midi_debugger);
 }
 
 void QtJackMainWindow::closeEvent(QCloseEvent *event) 
