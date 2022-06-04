@@ -99,7 +99,7 @@ void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
   uint32_t time = new_msg.timestamp;
   double time_in_ms = (time * 1000.0) / _sample_rate;
 
-  QString msg_string = "Time: " + QString::number(time_in_ms).rightJustified(10, '0'); +" Channel: " + QString::number(channel);
+  QString msg_string = "Time: " + QString::number(time_in_ms).rightJustified(10, '0') +" Channel: " + QString::number(channel);
   switch(type) {
     case 0x80:
       msg_string += " Note Off " + QString::number(index) + " Value: " + QString::number(value);
