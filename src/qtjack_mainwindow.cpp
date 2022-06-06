@@ -46,11 +46,18 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
 
 void QtJackMainWindow::setupJackClient() {
   // Connect to JACK server
-  _client.connectToServer("qtjack_midi_debugger");
-  _midi_in = _client.registerMidiInPort("in");
-  _sample_rate = _client.sampleRate();
-  _client.setMainProcessor(this);
-  _client.activate();
+  bool connected = _client.connectToServer("qtjack_midi_debugger");
+  if(connected) {
+    _midi_in = _client.registerMidiInPort("in");
+    _sample_rate = _client.sampleRate();
+    _client.setMainProcessor(this);
+    _client.activate();
+  }
+  else {
+    message_history_->addMessage(QString("Connection to jack server failed"));
+    printf("Connection to jack server failed\n");
+    emit closed();
+  }
 }
 
 QtJackMainWindow::~QtJackMainWindow()
@@ -62,8 +69,8 @@ QtJackMainWindow::~QtJackMainWindow()
 void QtJackMainWindow::closeEvent(QCloseEvent *event) 
 {
   QMainWindow::closeEvent(event);
-    if (event->isAccepted())
-      emit closed();
+  if (event->isAccepted())
+    emit closed();
 }
 
 void QtJackMainWindow::resizeEvent(QResizeEvent* event)
