@@ -65,6 +65,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   MessageHistory *message_history_ = nullptr;
   QtJack::Client _client;
   QtJack::MidiPort _midi_in;
+  QtJack::MidiPort _midi_out;
   QtJack::MidiBuffer* _midi_in_buffer;
   std::atomic_bool started;
   unsigned int _sample_rate;

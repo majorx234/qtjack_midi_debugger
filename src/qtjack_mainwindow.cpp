@@ -35,7 +35,8 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
 {
   Q_INIT_RESOURCE(qtjack_midi_debugger);
   mainwindow_ui_->setupUi(this);
-  setCentralWidget(message_history_);
+  mainwindow_ui_->centralVerticalLayout->addWidget(message_history_);
+  //setCentralWidget();
   mainwindow_ui_->actionStart->setEnabled(true);
   mainwindow_ui_->actionStop->setEnabled(false);
   mainwindow_ui_->actionQuit->setEnabled(true);
@@ -49,6 +50,7 @@ void QtJackMainWindow::setupJackClient() {
   bool connected = _client.connectToServer("qtjack_midi_debugger");
   if(connected) {
     _midi_in = _client.registerMidiInPort("in");
+    _midi_out = _client.registerMidiOutPort("out");
     _sample_rate = _client.sampleRate();
     _client.setMainProcessor(this);
     _client.activate();
