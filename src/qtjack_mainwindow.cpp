@@ -54,6 +54,7 @@ void QtJackMainWindow::setupJackClient() {
     _sample_rate = _client.sampleRate();
     _client.setMainProcessor(this);
     _client.activate();
+    _midi_out_buffer = QtJack::MidiMsgRingBuffer(1024);
   }
   else {
     message_history_->addMessage(QString("Connection to jack server failed"));
@@ -100,6 +101,24 @@ void QtJackMainWindow::toogleStop() {
   mainwindow_ui_->actionStop->setEnabled(false);
 }
 
+void QtJackMainWindow::sendMidiMsg() {
+  int t1 = _client.getJackTime();
+  QtJack::MidiMsg note_msg;
+
+  note_msg.midiData[0] = 0x91;
+  note_msg.midiData[1] = 0x69;
+  note_msg.midiData[2] = 0x3f;
+  note_msg.length = 3;
+  note_msg.timestamp = t1;
+
+  int space = _midi_out_buffer.numberOfElementsCanBeWritten();
+  if (space > 1) {
+    int written1 = _midi_out_buffer.write(&note_msg, 1);
+    // ToDo check if fail
+    // if(!written1)
+  }
+}
+
 void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
   int type = new_msg.midiData[0] & 0xf0;
   int channel = (new_msg.midiData[0] & 0x0f) + 1;
@@ -140,6 +159,8 @@ void QtJackMainWindow::initActionsConnections()
   connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
   connect(this, &QtJackMainWindow::midiMsgEvent,
           this, &QtJackMainWindow::processMidiMsg);
+  connect(this->mainwindow_ui_->sendButton, &QPushButton::clicked,
+          this, &QtJackMainWindow::sendMidiMsg );
 }
 
 void QtJackMainWindow::process(int samples) {
@@ -160,4 +181,46 @@ void QtJackMainWindow::process(int samples) {
       }
     }
   }
+  
+  QtJack::MidiBuffer outport_buffer = _midi_out.buffer(samples);
+  outport_buffer.clearEventBuffer();
+  last_frame_time = _client.getJackTime();
+  bool looped = false;
+  int elements = _midi_out_buffer.numberOfElementsAvailableForRead();
+  while (elements && !looped) {
+    QtJack::MidiMsg ev;
+    int read = _midi_out_buffer.read(&ev, 1);
+    if(read < 1) continue;
+    if (first_added_message == ev.timestamp) {
+      //first element wich was written back for future use
+      looped = true;
+      // need to write it back:
+      int space = _midi_out_buffer.numberOfElementsCanBeWritten();
+      if (space) {
+        int written = _midi_out_buffer.write(&ev, 1);
+      }
+      break;
+    }
+    int t = ev.timestamp + samples - last_frame_time;
+    if (t >= static_cast<int>(samples)) { // write back for future use
+      if(!first_added_message)
+        first_added_message = ev.timestamp;
+      int space = _midi_out_buffer.numberOfElementsCanBeWritten();
+      if (space) {
+        int written = _midi_out_buffer.write(&ev, 1);
+        // ToDo check if fail
+        // if(!written)
+      }
+    } else {
+      if (t < 0)
+        t = 0; // maybe we missed a cirlce because of xrun
+      QtJack::MidiData *mididata = outport_buffer.reserveEvent(t, ev.length);
+      if (mididata)
+        memcpy(mididata, ev.midiData, ev.length);
+      // check if midi msgs was sent
+      // if(!midi_was_sent)
+    }
+    elements = _midi_out_buffer.numberOfElementsAvailableForRead();
+  }
+
 }

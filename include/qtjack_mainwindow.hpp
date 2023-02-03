@@ -57,6 +57,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void toogleStart();
   void toogleStop();
   void processMidiMsg(QtJack::MidiMsg new_msg);
+  void sendMidiMsg();
 
  private:
   void setupJackClient();
@@ -67,8 +68,12 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   QtJack::MidiPort _midi_in;
   QtJack::MidiPort _midi_out;
   QtJack::MidiBuffer* _midi_in_buffer;
+  QtJack::MidiMsgRingBuffer _midi_out_buffer;
   std::atomic_bool started;
   unsigned int _sample_rate;
+  int last_frame;
+  int last_frame_time;
+  int first_added_message;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP
