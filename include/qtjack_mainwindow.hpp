@@ -29,6 +29,7 @@
 #include <Processor>
 #include <RingBuffer>
 #include <MidiMsg>
+#include <midievent.h>
 
 namespace Ui {
 class MainWindow;
@@ -41,11 +42,12 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   explicit QtJackMainWindow(QWidget *parent = nullptr);
   ~QtJackMainWindow();
   void msg_history_cb(std::string str);
-  void process(int samples);
+  void process(int samples) override;
  
  signals:
   void closed();
   void midiMsgEvent(QtJack::MidiMsg);
+  void midiEventEvent(QtJack::MidiEvent);
 
  protected:
   void closeEvent(QCloseEvent *event) override;
@@ -57,7 +59,9 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void toogleStart();
   void toogleStop();
   void processMidiMsg(QtJack::MidiMsg new_msg);
+  void processMidiEvent(QtJack::MidiEvent new_event);
   void sendMidiMsg();
+  void sendSysExMidiMsg(QByteArray midi_bytes);
 
  private:
   void setupJackClient();
@@ -68,7 +72,8 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   QtJack::MidiPort _midi_in;
   QtJack::MidiPort _midi_out;
   QtJack::MidiBuffer* _midi_in_buffer;
-  QtJack::MidiMsgRingBuffer _midi_out_buffer;
+  QtJack::MidiMsgRingBuffer _midi_msg_out_buffer;
+  QtJack::MidiRingBuffer _midi_sys_ex_out_buffer;
   std::atomic_bool started;
   unsigned int _sample_rate;
   int last_frame;
