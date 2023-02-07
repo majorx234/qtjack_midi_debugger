@@ -78,7 +78,6 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   unsigned int _sample_rate;
   int last_frame;
   int last_frame_time;
-  int first_added_message;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP
