@@ -47,12 +47,18 @@ make
 - connect midi devices or other programs to inpput via tools like patchage, gladish...
 
 ## History:
+- 2023-02-08 Add support for Midi SysEx Messages (Send & Receive)
 - 2022-06-01 Add timestamp in ms
 - 2022-06-01 Version 1.0.0 with install section
 - 2022-05-30 toggle via GUI elements printing of midi messages
 - 2022-05-28 First running Version of GUI Programm
 
 ## ToDo:
-- support for other Midi messages like SysEx etc.
+- support for longer SysEx Midi messages >16 Byte (need rt save memory alloc)
 - GUI elements like start/stop recording
 - save history in Midi file 
+
+# References:
+- inspired by '''qmidimonitor''':
+  - git://repo.or.cz/gmidimonitor.git
+  - https://github.com/nedko/gmidimonitor
