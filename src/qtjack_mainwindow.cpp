@@ -135,6 +135,7 @@ void QtJackMainWindow::sendMidiMsg() {
 void QtJackMainWindow::sendSysExMidiMsg(QByteArray midi_bytes) {
   int t1 = _client.getJackTime();
   QtJack::MidiEvent sys_ex_msg;
+  // examples
   //  F0 7F 7F 06 02 F7 -> F07F7F0602F7
   // f00021420000480101f7
   int space = _midi_sys_ex_out_buffer.numberOfElementsCanBeWritten();
@@ -146,7 +147,6 @@ void QtJackMainWindow::sendSysExMidiMsg(QByteArray midi_bytes) {
     int written3 = _midi_sys_ex_out_buffer.write(reinterpret_cast<unsigned char *>(midi_bytes.data()), midi_bytes.size());
     // ToDo check if fail
     // if(!written1)
-    printf("written sys_ex: %d %d %d \n", written1,written2,written3);
   }
 }
 
@@ -183,7 +183,7 @@ void QtJackMainWindow::processMidiMsg(QtJack::MidiMsg new_msg) {
 }
 
 void QtJackMainWindow::processMidiEvent(QtJack::MidiEvent new_event) {
-  message_history_->addMessage(QString(QByteArray(reinterpret_cast<const char *>(new_event.buffer), new_event.size).toHex()));
+  message_history_->addMessage("SysEx: " + QString(QByteArray(reinterpret_cast<const char *>(new_event.buffer), new_event.size).toHex()));
 }
 
 void QtJackMainWindow::initActionsConnections()
@@ -217,7 +217,7 @@ void QtJackMainWindow::process(int samples) {
                                  timestamp};
         emit midiMsgEvent(new_msg);
       } else {
-        printf("SysEx msgs received\n");
+        midiEventEvent(in_event);
       }
     }
   }
