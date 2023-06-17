@@ -20,7 +20,8 @@
 #include <QScrollBar>
 
 MessageHistory::MessageHistory(QWidget *parent) 
-  :QPlainTextEdit(parent)
+  : QPlainTextEdit(parent)
+  , record_in_history(false)
 {
     document()->setMaximumBlockCount(1000);
     QPalette p = palette();
@@ -33,6 +34,8 @@ void MessageHistory::addMessage(const QString msg)
 {
     moveCursor(QTextCursor::End);
     appendPlainText(msg);
+    if(record_in_history)
+      history.append(msg);
     QScrollBar *bar = verticalScrollBar();
     bar->setValue(bar->maximum());
 }

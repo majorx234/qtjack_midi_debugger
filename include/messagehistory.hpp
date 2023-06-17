@@ -19,16 +19,21 @@
 #define MESSAGE_HISTORY_HPP_
 
 #include <QPlainTextEdit>
+#include <QList>
 
 class MessageHistory : public QPlainTextEdit
 {
   Q_OBJECT
 signals:
-    void getData(const QByteArray &data);
-public:
-    explicit MessageHistory(QWidget *parent = nullptr);
-    void addMessage(const QString msg);
-    void setLocalEchoEnabled(bool set); 
+  void getData(const QByteArray &data);
+ public:
+  explicit MessageHistory(QWidget *parent = nullptr);
+  void setLocalEchoEnabled(bool set);
+ public slots:
+  void addMessage(const QString msg);
+ private:
+  QList<QString> history;
+  bool record_in_history;
 };
 
 #endif // MESSAGE_HISTORY_HPP_
