@@ -1,5 +1,5 @@
-#ifndef MIDI_MSG_HPP
-#define MIDI_MSG_HPP
+#ifndef MIDIMSG_STORE_HPP
+#define MIDIMSG_STORE_HPP
 
 #include <QList>
 #include <MidiMsg>
@@ -13,7 +13,7 @@ class MidiMsgStore {
   void reset();
   void save_as_midi_file(std::string path);
  private:
-  Qlist<QtJack::MidiMsg> midi_msg_list;
-}
+  QList<QtJack::MidiMsg> midi_msg_list;
+};
 
-#endif // MIDI_MSG_HPP
+#endif // MIDIMSG_STORE_HPP

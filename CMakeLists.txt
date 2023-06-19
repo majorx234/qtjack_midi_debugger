@@ -16,7 +16,7 @@ find_package(Threads)
 find_package(qtjack)
 
 list (APPEND RESOURCES 
-        ${CMAKE_CURRENT_SOURCE_DIR}/qtjack_midi_debugger.qrc
+  ${CMAKE_CURRENT_SOURCE_DIR}/qtjack_midi_debugger.qrc
 )
 
 set(MESSAGE_HISTORY_HEADERS 
@@ -25,7 +25,6 @@ set(MESSAGE_HISTORY_HEADERS
 set(MESSAGE_HISTORY_SOURCES 
   src/messagehistory.cpp
 )
-
 
 set(QTJACK_MAINWINDOW_HEADERS
   include/qtjack_mainwindow.hpp
@@ -38,6 +37,14 @@ set(QTJACK_MAINWINDOW_SOURCES
 set(QTJACK_MAIN_APP_SOURCES
   src/qtjack_main_app.cpp
 )
+
+set(MIDIMSG_STORE_HEADERS
+  include/midimsg_store.hpp
+)
+
+set(MIDIMSG_STORE_SOURCES
+	src/midimsg_store.cpp
+) 
 
 QT5_WRAP_UI(MAIN_WINDOW_UISrcs 
             ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.ui)
@@ -72,6 +79,26 @@ target_link_libraries(message_history
 )
 set_target_properties(message_history PROPERTIES PUBLIC_HEADER "${MESSAGE_HISTORY_HEADERS}")
 qt5_add_resources (RCC_SOURCES ${RESOURCES})
+
+add_library(midimsg_store SHARED)
+target_sources(midimsg_store
+PRIVATE
+    ${MIDIMSG_STORE_SOURCES}
+    ${MIDIMSG_STORE_HEADERS}
+)
+target_include_directories(midimsg_store SYSTEM
+PUBLIC 
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/midimsgs_store
+PRIVATE
+  include
+  ${CMAKE_CURRENT_BINARY_DIR} 
+)
+target_link_libraries(midimsg_store
+PRIVATE
+  Qt5::Core
+  qtjack::qtjack
+)
+set_target_properties(midimsg_store PROPERTIES PUBLIC_HEADER "${MIDIMSG_STORE_HEADERS}")
 
 
 add_library(qtjack_midi_debugger SHARED)
