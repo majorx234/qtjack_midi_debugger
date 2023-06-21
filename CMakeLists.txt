@@ -14,6 +14,7 @@ include(GNUInstallDirs)
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 find_package(Threads)
 find_package(qtjack)
+find_package(PortSMF)
 
 list (APPEND RESOURCES 
   ${CMAKE_CURRENT_SOURCE_DIR}/qtjack_midi_debugger.qrc
@@ -91,12 +92,14 @@ PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>/midimsgs_store
 PRIVATE
   include
-  ${CMAKE_CURRENT_BINARY_DIR} 
+  ${CMAKE_CURRENT_BINARY_DIR}
+	PortSMF::PortSMF
 )
 target_link_libraries(midimsg_store
 PRIVATE
   Qt5::Core
   qtjack::qtjack
+	PortSMF::PortSMF
 )
 set_target_properties(midimsg_store PROPERTIES PUBLIC_HEADER "${MIDIMSG_STORE_HEADERS}")
 

@@ -12,6 +12,7 @@ class MidiMsgStore {
   void add_midi_msg(QtJack::MidiMsg msg);
   void reset();
   void save_as_midi_file(std::string path);
+  void save_as_csv_file(std::string path);
  private:
   QList<QtJack::MidiMsg> midi_msg_list;
 };
