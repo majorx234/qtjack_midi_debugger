@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -37,8 +38,12 @@ void MidiMsgStore::save_as_csv_file(std::string path) {
   std::ofstream midi_event_csv_file;
   midi_event_csv_file.open(path);
   for (auto midi_event : midi_msg_list) {
-    midi_event_csv_file << midi_event.length;
-    //ToDo; write Midi Meessage in CSV
+    uint8_t status_byte = midi_event.midiData[0] >> 4;
+    uint8_t channel = midi_event.midiData[0] & 0x0f;
+    uint8_t param1 = midi_event.midiData[1] & 0x7f;
+    uint8_t param2 = midi_event.midiData[2] & 0x7f;
+    int norm_time = midi_event.timestamp - first.timestamp;
+    midi_event_csv_file << norm_time << "," << status_byte << "," << channel << "," << param1 << "," << param2 << std::endl;
   }
   midi_event_csv_file.close();
 }
