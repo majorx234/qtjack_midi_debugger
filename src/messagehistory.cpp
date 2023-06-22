@@ -18,6 +18,8 @@
 #include "messagehistory.hpp"
 
 #include <QScrollBar>
+#include <QEvent>
+#include <QObject>
 
 MessageHistory::MessageHistory(QWidget *parent) 
   : QPlainTextEdit(parent)
@@ -28,6 +30,7 @@ MessageHistory::MessageHistory(QWidget *parent)
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::green);
     setPalette(p);
+    this->installEventFilter(this);
 }
 
 void MessageHistory::addMessage(const QString msg)
@@ -40,3 +43,15 @@ void MessageHistory::addMessage(const QString msg)
     bar->setValue(bar->maximum());
 }
 
+bool MessageHistory::eventFilter(QObject *object, QEvent *event)
+{
+  if (event->type() == QEvent::MouseButtonPress) {
+    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    emit onclick();
+    qDebug("Mouse button pressed");
+    return true;
+  } else {
+    // standard event processing
+    return QObject::eventFilter(object, event);
+  }
+}

@@ -26,12 +26,14 @@ class MessageHistory : public QPlainTextEdit
   Q_OBJECT
 signals:
   void getData(const QByteArray &data);
+  void onclick();
  public:
   explicit MessageHistory(QWidget *parent = nullptr);
   void setLocalEchoEnabled(bool set);
  public slots:
   void addMessage(const QString msg);
  private:
+  bool eventFilter(QObject *object, QEvent *event);
   QList<QString> history;
   bool record_in_history;
 };
