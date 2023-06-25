@@ -192,6 +192,8 @@ void QtJackMainWindow::initActionsConnections()
   connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::toogleStart);
   connect(mainwindow_ui_->actionStop, &QAction::triggered, this, &QtJackMainWindow::toogleStop);
   connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
+  connect(message_history_, &MessageHistory::onclick,
+          [&](){this->message_history_->addMessage("test lambda"); });
   connect(this, &QtJackMainWindow::midiMsgEvent,
           this, &QtJackMainWindow::processMidiMsg);
   connect(this, &QtJackMainWindow::midiEventEvent,
