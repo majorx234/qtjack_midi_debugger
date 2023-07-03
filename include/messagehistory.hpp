@@ -18,6 +18,7 @@
 #ifndef MESSAGE_HISTORY_HPP_
 #define MESSAGE_HISTORY_HPP_
 
+#include <chrono>
 #include <QPlainTextEdit>
 #include <QList>
 
@@ -36,6 +37,7 @@ signals:
   bool eventFilter(QObject *object, QEvent *event);
   QList<QString> history;
   bool record_in_history;
+  std::chrono::steady_clock::time_point begin;
 };
 
 #endif // MESSAGE_HISTORY_HPP_

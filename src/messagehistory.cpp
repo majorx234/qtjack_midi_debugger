@@ -17,13 +17,18 @@
 
 #include "messagehistory.hpp"
 
+#include <iostream>
+#include <sstream>
+
 #include <QScrollBar>
 #include <QEvent>
 #include <QObject>
 
+
 MessageHistory::MessageHistory(QWidget *parent) 
   : QPlainTextEdit(parent)
   , record_in_history(false)
+  , begin(std::chrono::steady_clock::now())
 {
     document()->setMaximumBlockCount(1000);
     QPalette p = palette();
@@ -35,6 +40,9 @@ MessageHistory::MessageHistory(QWidget *parent)
 
 void MessageHistory::addMessage(const QString msg)
 {
+    std::chrono::steady_clock::time_point msg_time = std::chrono::steady_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(msg_time - begin).count();
+                    
     moveCursor(QTextCursor::End);
     appendPlainText(msg);
     if(record_in_history)
