@@ -58,6 +58,8 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void test();
   void toogleStart();
   void toogleStop();
+  void toogleCheckMouseClicksOn();
+  void toogleCheckMouseClicksOff();
   void processMidiMsg(QtJack::MidiMsg new_msg);
   void processMidiEvent(QtJack::MidiEvent new_event);
   void sendMidiMsg();

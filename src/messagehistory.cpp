@@ -57,7 +57,6 @@ bool MessageHistory::eventFilter(QObject *object, QEvent *event)
   if (event->type() == QEvent::MouseButtonPress) {
     QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
     emit onclick();
-    qDebug("Mouse button pressed");
     return true;
   } else {
     // standard event processing

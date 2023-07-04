@@ -107,6 +107,14 @@ void QtJackMainWindow::toogleStop() {
   mainwindow_ui_->actionStop->setEnabled(false);
 }
 
+void QtJackMainWindow::toogleCheckMouseClicksOn() {
+  message_history_->blockSignals(true);
+}
+
+void QtJackMainWindow::toogleCheckMouseClicksOff() {
+  message_history_->blockSignals(false);
+}
+
 void QtJackMainWindow::sendMidiMsg() {
   QString midi_msg_to_send = mainwindow_ui_->sendInput->text();
   QByteArray midi_msg_to_send_bytes = QByteArray::fromHex(midi_msg_to_send.toLatin1());
@@ -193,7 +201,7 @@ void QtJackMainWindow::initActionsConnections()
   connect(mainwindow_ui_->actionStop, &QAction::triggered, this, &QtJackMainWindow::toogleStop);
   connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
   connect(message_history_, &MessageHistory::onclick,
-          [&](){this->message_history_->addMessage("test lambda"); });
+          [&](){this->message_history_->addMessage("mouse click"); });
   connect(this, &QtJackMainWindow::midiMsgEvent,
           this, &QtJackMainWindow::processMidiMsg);
   connect(this, &QtJackMainWindow::midiEventEvent,
