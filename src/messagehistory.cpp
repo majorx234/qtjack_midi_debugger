@@ -44,7 +44,7 @@ void MessageHistory::addMessage(const QString msg)
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(msg_time - begin).count();
                     
     moveCursor(QTextCursor::End);
-    QString format_msg = QString("%1 - %2").arg(QString::number(duration), msg);
+    QString format_msg = QString("%1 - %2").arg(QString::number(duration).rightJustified(8, '0'), msg);
     appendPlainText(format_msg);
     if(record_in_history)
       history.append(msg);
