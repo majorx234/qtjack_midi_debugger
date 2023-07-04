@@ -35,7 +35,7 @@ MessageHistory::MessageHistory(QWidget *parent)
     p.setColor(QPalette::Base, Qt::black);
     p.setColor(QPalette::Text, Qt::green);
     setPalette(p);
-    this->installEventFilter(this);
+    this->viewport()->installEventFilter(this);
 }
 
 void MessageHistory::addMessage(const QString msg)
