@@ -17,6 +17,7 @@
 
 #include <cstdio>
 #include <midievent.h>
+#include <qaction.h>
 #include <ringbuffer.h>
 #include <string>
 #include <sstream>
@@ -37,6 +38,7 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   , message_history_(new MessageHistory(this))
   , started(false)
   , _sample_rate(48000)
+  , check_mouse_clicks(false)
 {
   Q_INIT_RESOURCE(qtjack_midi_debugger);
   mainwindow_ui_->setupUi(this);
@@ -95,24 +97,28 @@ void QtJackMainWindow::test() {
   message_history_->addMessage(QString("Hello Jack"));
 }
 
-void QtJackMainWindow::toogleStart() {
+void QtJackMainWindow::toggleStart() {
   started = true;
   mainwindow_ui_->actionStart->setEnabled(false);
   mainwindow_ui_->actionStop->setEnabled(true);
 }
 
-void QtJackMainWindow::toogleStop() {
+void QtJackMainWindow::toggleStop() {
   started = false;
   mainwindow_ui_->actionStart->setEnabled(true);
   mainwindow_ui_->actionStop->setEnabled(false);
 }
 
-void QtJackMainWindow::toogleCheckMouseClicksOn() {
-  message_history_->blockSignals(true);
-}
-
-void QtJackMainWindow::toogleCheckMouseClicksOff() {
-  message_history_->blockSignals(false);
+void QtJackMainWindow::toggleCheckMouseClicks() {
+  if(check_mouse_clicks) {
+    mainwindow_ui_->actionCheckMouseClick->setIcon(QIcon(":/images/toggle_mouse_on.png"));
+    message_history_->blockSignals(false);
+    check_mouse_clicks = false;
+  } else {
+    mainwindow_ui_->actionCheckMouseClick->setIcon(QIcon(":/images/toggle_mouse_off.png"));
+    message_history_->blockSignals(true);
+    check_mouse_clicks = true;
+  }
 }
 
 void QtJackMainWindow::sendMidiMsg() {
@@ -197,9 +203,10 @@ void QtJackMainWindow::processMidiEvent(QtJack::MidiEvent new_event) {
 void QtJackMainWindow::initActionsConnections()
 {
   connect(mainwindow_ui_->actionQuit, &QAction::triggered, this, &QtJackMainWindow::close);
-  connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::toogleStart);
-  connect(mainwindow_ui_->actionStop, &QAction::triggered, this, &QtJackMainWindow::toogleStop);
+  connect(mainwindow_ui_->actionStart, &QAction::triggered, this, &QtJackMainWindow::toggleStart);
+  connect(mainwindow_ui_->actionStop, &QAction::triggered, this, &QtJackMainWindow::toggleStop);
   connect(mainwindow_ui_->actionClear, &QAction::triggered, message_history_,  &MessageHistory::clear);
+  connect(mainwindow_ui_->actionCheckMouseClick, &QAction::triggered, this, &QtJackMainWindow::toggleCheckMouseClicks);
   connect(message_history_, &MessageHistory::onclick,
           [&](){this->message_history_->addMessage("mouse click"); });
   connect(this, &QtJackMainWindow::midiMsgEvent,

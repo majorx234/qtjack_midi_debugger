@@ -56,10 +56,9 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
  private slots:
   void close();
   void test();
-  void toogleStart();
-  void toogleStop();
-  void toogleCheckMouseClicksOn();
-  void toogleCheckMouseClicksOff();
+  void toggleStart();
+  void toggleStop();
+  void toggleCheckMouseClicks();
   void processMidiMsg(QtJack::MidiMsg new_msg);
   void processMidiEvent(QtJack::MidiEvent new_event);
   void sendMidiMsg();
@@ -80,6 +79,7 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   unsigned int _sample_rate;
   int last_frame;
   int last_frame_time;
+  bool check_mouse_clicks;
 };        
 
 #endif // QTJACK_MAIN_WINDOW_HPP

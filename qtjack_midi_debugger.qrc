@@ -5,5 +5,7 @@
         <file>images/exit.png</file>
         <file>images/config.png</file>
         <file>images/clear.png</file>
+				<file>images/toggle_mouse_on.png</file>
+				<file>images/toggle_mouse_off.png</file>
     </qresource>
 </RCC>
