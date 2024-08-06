@@ -12,9 +12,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(GNUInstallDirs)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-find_package(Threads)
-find_package(qtjack)
-find_package(PortSMF)
+find_package(Threads REQUIRED)
+find_package(qtjack REQUIRED)
+find_package(PortSMF REQUIRED)
 
 list (APPEND RESOURCES 
   ${CMAKE_CURRENT_SOURCE_DIR}/qtjack_midi_debugger.qrc
