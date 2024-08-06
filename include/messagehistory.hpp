@@ -33,9 +33,16 @@ signals:
   void setLocalEchoEnabled(bool set);
  public slots:
   void addMessage(const QString msg);
+  int addFilter(const QString filter);
+  QList<int> addFilterList(const QString filter);
+  void clearAllFilter();
+  bool deleteFilter(int filter_index);
+
  private:
   bool eventFilter(QObject *object, QEvent *event);
   QList<QString> history;
+  QMap<int, QString> filter_map;
+  int filter_count;
   bool record_in_history;
   std::chrono::steady_clock::time_point begin;
 };
