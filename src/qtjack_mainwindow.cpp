@@ -48,6 +48,11 @@ QtJackMainWindow::QtJackMainWindow(QWidget *parent)
   mainwindow_ui_->actionStop->setEnabled(false);
   mainwindow_ui_->actionQuit->setEnabled(true);
   mainwindow_ui_->actionConfigure->setEnabled(true);
+
+  filter_label_ = new QLabel("Filter:", this);
+  mainwindow_ui_->mainToolBar->addWidget(filter_label_);
+  filter_in_ = new QLineEdit(this);
+  mainwindow_ui_->mainToolBar->addWidget(filter_in_);
   initActionsConnections();
   setupJackClient();
 }

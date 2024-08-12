@@ -21,6 +21,9 @@
 #include <atomic>
 
 #include <QtWidgets/QMainWindow>
+#include <QLabel>
+#include <QLineEdit>
+
 #include "ui_mainwindow.h"
 #include "messagehistory.hpp"
 
@@ -69,6 +72,8 @@ class QtJackMainWindow : public QMainWindow, public QtJack::Processor  {
   void initActionsConnections();
   Ui::MainWindow *mainwindow_ui_ = nullptr;
   MessageHistory *message_history_ = nullptr;
+  QLabel* filter_label_;
+  QLineEdit* filter_in_;
   QtJack::Client _client;
   QtJack::MidiPort _midi_in;
   QtJack::MidiPort _midi_out;
