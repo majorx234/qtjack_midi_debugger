@@ -220,6 +220,7 @@ void QtJackMainWindow::initActionsConnections()
           this, &QtJackMainWindow::processMidiEvent);
   connect(this->mainwindow_ui_->sendButton, &QPushButton::clicked,
           this, &QtJackMainWindow::sendMidiMsg );
+  connect(this->filter_in_, &QLineEdit::textChanged, message_history_, &MessageHistory::addFilterList);
 }
 
 void QtJackMainWindow::process(int samples) {

@@ -27,6 +27,7 @@
 
 MessageHistory::MessageHistory(QWidget *parent)
   : QPlainTextEdit(parent)
+  , filter_count(0)
   , record_in_history(false)
   , begin(std::chrono::steady_clock::now())
 {
@@ -40,16 +41,36 @@ MessageHistory::MessageHistory(QWidget *parent)
 
 void MessageHistory::addMessage(const QString msg)
 {
-    std::chrono::steady_clock::time_point msg_time = std::chrono::steady_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(msg_time - begin).count();
+  std::chrono::steady_clock::time_point msg_time = std::chrono::steady_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(msg_time - begin).count();
 
-    moveCursor(QTextCursor::End);
-    QString format_msg = QString("%1 - %2").arg(QString::number(duration).rightJustified(8, '0'), msg);
-    appendPlainText(format_msg);
-    if(record_in_history)
+  moveCursor(QTextCursor::End);
+  QString format_msg = QString("%1 - %2").arg(QString::number(duration).rightJustified(8, '0'), msg);
+  appendPlainText(format_msg);
+  if(record_in_history){
+    bool add_it = false;
+    if (filter_map.empty())
+      add_it = true;
+    else {
+      for (auto it = filter_map.keyValueBegin(); it != filter_map.keyValueEnd(); ++it) {
+        auto key = it->first;
+        auto value = it->second;
+        if (msg.contains(value, Qt::CaseInsensitive)){
+          add_it = true;
+          break;
+          // this acts like an "OR"
+        }
+        // if need all filters need to match (AND):
+        // add_it &= msg.contains(value, Qt::CaseInsensitive)
+      }
+    }
+    if (add_it) {
       history.append(msg);
-    QScrollBar *bar = verticalScrollBar();
-    bar->setValue(bar->maximum());
+    }
+  }
+
+  QScrollBar *bar = verticalScrollBar();
+  bar->setValue(bar->maximum());
 }
 
 int MessageHistory::addFilter(const QString filter){
