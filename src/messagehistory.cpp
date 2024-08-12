@@ -1,5 +1,5 @@
 /*
- * This file is part of the rtaudio_example distribution (https://github.com/majorx234/qtjack_midi_debugger ).
+ * This file is part of the qtjack_midi_debugger distribution (https://github.com/majorx234/qtjack_midi_debugger ).
  * Copyright (c) 2021-2022 Majorx234 <majorx234@googlemail.com>
  *
  * This program is free software: you can redistribute it and/or modify
