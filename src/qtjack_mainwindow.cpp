@@ -240,11 +240,11 @@ void QtJackMainWindow::process(int samples) {
                                  timestamp};
         emit midiMsgEvent(new_msg);
       } else {
-        midiEventEvent(in_event);
+        emit midiEventEvent(in_event);
       }
     }
   }
-  
+
   // write data to jack output
   QtJack::MidiBuffer outport_buffer = _midi_out.buffer(samples);
   outport_buffer.clearEventBuffer();
